@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use bitcoin::{opcodes::OP_TRUE, Opcode};
+use bitcoin::{opcodes::OP_TRUE, Opcode, hex::FromHex};
 use bitcoin::opcodes::all::*;
 
 pub use bitcoin_script::script;
@@ -8,8 +8,6 @@ pub use bitcoin_script::builder::StructuredScript as Script;
 
 use crate::debugger::{execute_step, print_execute_step, show_altstack, show_stack, StepResult};
 use super::script_util::*;
-
-use hex::FromHex;
 
 
 #[derive(Clone, Debug, Copy)]
