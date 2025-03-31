@@ -38,7 +38,7 @@ fn get_digit(instruction: &Instruction) -> Option<u8> {
             }
         }, 
         Instruction::PushBytes(x) => { // zero bytes is op_0
-            if x.as_bytes().len() == 0 {
+            if x.as_bytes().is_empty() {
                 return Some(0);
             }
         }
@@ -48,12 +48,12 @@ fn get_digit(instruction: &Instruction) -> Option<u8> {
 
 fn get_opcode(instruction: &Instruction) -> Option<Opcode> {
     match instruction {
-        Instruction::Op(op) => Some(op.clone()),
+        Instruction::Op(op) => Some(*op),
         _ => None
     }
 }
 
-fn count_ahead(instructions: &Vec<Instruction>, i: usize) -> usize {
+fn count_ahead(instructions: &[Instruction], i: usize) -> usize {
     let mut j = i + 1;
     let mut count = 0;
     while j < instructions.len() {

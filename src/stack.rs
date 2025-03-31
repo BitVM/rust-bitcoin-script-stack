@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use bitcoin::{opcodes::OP_TRUE, Opcode};
+use bitcoin::{opcodes::OP_TRUE, Opcode, hex::FromHex};
 use bitcoin::opcodes::all::*;
 
 pub use bitcoin_script::script;
@@ -8,8 +8,6 @@ pub use bitcoin_script::builder::StructuredScript as Script;
 
 use crate::debugger::{execute_step, print_execute_step, show_altstack, show_stack, StepResult};
 use super::script_util::*;
-
-use hex::FromHex;
 
 
 #[derive(Clone, Debug, Copy)]
@@ -517,7 +515,7 @@ impl StackTracker {
             self.data.pop_stack();
         }
 
-        if output_vars.len() > 0 {
+        if !output_vars.is_empty() {
             let mut ret = Vec::new();
 
             for (size, name) in output_vars {
@@ -539,10 +537,10 @@ impl StackTracker {
     pub fn custom(&mut self, script: Script, consumes: u32, output: bool, to_altstack: u32, name: &str ) -> Option<StackVariable> {
         let mut output_vec = vec![];
         if output {
-            output_vec.push((1 as u32, name.to_string()));
+            output_vec.push((1u32, name.to_string()));
         }
         let ret = self.custom_ex(script, consumes, output_vec, to_altstack);
-        if ret.len() == 0 {
+        if ret.is_empty() {
             None
         } else {
             Some(ret[0])
